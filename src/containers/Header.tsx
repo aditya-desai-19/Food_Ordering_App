@@ -6,7 +6,6 @@ const Header: React.FC = () => {
     return (
         <div className={styles.header}>
                 <img className={styles.logo} src={require("../assets/app-logo.png")} />
-                {/* My logo */}
             <div className={styles.navItems}>
                 <ul>
                     <li>Home</li>

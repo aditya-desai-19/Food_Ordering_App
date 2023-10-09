@@ -1,11 +1,14 @@
 import React from "react";
-import Header from "./components/Header";
+//@ts-ignore
+import Header from "./containers/Header";
 import "./App.css";
+import Main from "./containers/Main";
 
 const App: React.FC = () => {
     return (
         <div>
             <Header />
+            <Main />
         </div>
     )
 }
