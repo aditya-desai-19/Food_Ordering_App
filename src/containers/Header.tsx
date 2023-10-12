@@ -5,7 +5,7 @@ import styles from "./styles/Header.module.css";
 const Header: React.FC = () => {
     return (
         <div className={styles.header}>
-                <img className={styles.logo} src={require("../assets/app-logo.png")} />
+                <img className={styles.logo} src={require("../assets/images/app-logo.png")} />
             <div className={styles.navItems}>
                 <ul>
                     <li>Home</li>
