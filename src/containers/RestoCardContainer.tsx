@@ -2,7 +2,7 @@ import React from 'react';
 import RestoCard from '../components/RestoCard';
 
 interface RestoCardProps {
-    data: {id: number, img: string, name: string, cuisines: string, ratings: number}[]
+    data: any[]
 };
 
 const RestoCardContainer: React.FC<RestoCardProps> = ({ data }) => {
