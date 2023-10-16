@@ -6,14 +6,16 @@ interface RestoCardProps {
     imgSrc: string;
     restoName: string;
     cuisine: string;
-    ratings: number
+    ratings: string;
+    location: string;
 }
 
 const RestoCard: React.FC<RestoCardProps> = ({
     imgSrc,
     restoName,
     cuisine,
-    ratings
+    ratings,
+    location
 }) => {
     return (
         <div className={styles.card}>
@@ -21,6 +23,7 @@ const RestoCard: React.FC<RestoCardProps> = ({
             <h3>{restoName}</h3>
             <h4>{cuisine}</h4>
             <p>{ratings}/5</p>
+            <p>{location}</p>
         </div>
     )
 }
