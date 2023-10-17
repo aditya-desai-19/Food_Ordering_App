@@ -1,5 +1,8 @@
 import React from 'react';
 import RestoCard from '../components/RestoCard';
+import { CDN_URL } from '../assets/data/data';
+//@ts-ignore
+import styles from './styles/RestoCardContainer.module.css';
 
 interface RestoCardProps {
     data: {
@@ -16,11 +19,11 @@ interface RestoCardProps {
 
 const RestoCardContainer: React.FC<RestoCardProps> = ({ data }) => {
     return (
-        <div className="restoContainer" style={{ display: 'flex' }}>
+        <div className={styles.restoContainer}>
             {data.map((item) =>
                 <RestoCard
                     key = {item.info.id}
-                    imgSrc={item.info.cloudinaryImageId}
+                    imgSrc={CDN_URL + item.info.cloudinaryImageId}
                     restoName={item.info.name}
                     cuisine={item.info.cuisines[0]}
                     ratings={item.info.avgRatingString}

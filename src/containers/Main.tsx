@@ -4,6 +4,7 @@ import RestoCardContainer from "./RestoCardContainer";
 //@ts-ignore
 import styles from "./styles/Main.module.css";
 import { SWIGGY_API } from "../assets/data/data";
+import Shimmer from "./Shimmer";
 
 const Main: React.FC = () => {
     const [data, setData] = useState<{
@@ -39,7 +40,7 @@ const Main: React.FC = () => {
         setData(filteredRestaurants);
     }
 
-    return (
+    return data.length === 0 ? <Shimmer /> :(
         <div className={styles.main}>
             <Search />
             <button onClick={filterRestaurants}>Top rated restaurants</button>
