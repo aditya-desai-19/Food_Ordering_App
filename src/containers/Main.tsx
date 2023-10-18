@@ -17,22 +17,44 @@ const Main: React.FC = () => {
         costForTwo: string,
         cuisines: string
     }[]>([]);
+    const [filterData, setFilterData] = useState<{
+        info: any,
+        id: string,
+        name: string,
+        imageSrc: string,
+        avgRating: string,
+        location: string,
+        costForTwo: string,
+        cuisines: string
+    }[]>([]);
+    const [searchText, setSearchText] = useState<string>('');
 
     useEffect(() => {
         fetchData();
-    },[]);
+    }, []);
 
-    const fetchData = async() => {
+    const fetchData = async () => {
         try {
             const response = await fetch(SWIGGY_API);
             const fetchData = await response.json();
             const fetchedRestaurants = fetchData.data.cards[2].card.card.gridElements.infoWithStyle.restaurants;
             console.log(fetchedRestaurants)
             setData(fetchedRestaurants);
+            setFilterData(fetchedRestaurants);
         } catch (error) {
             console.log(error);
         }
-        
+    }
+
+    const handleChange = (e: any) => {
+        setSearchText(e.target.value);
+    }
+
+    const filterBySearch = () => {
+        const filteredRestaurants = data.filter((restaurant) =>
+            restaurant.info.name.toLowerCase().includes(searchText.toLowerCase())
+        );
+        setFilterData(filteredRestaurants);
     }
 
     const filterRestaurants = () => {
@@ -40,11 +62,11 @@ const Main: React.FC = () => {
         setData(filteredRestaurants);
     }
 
-    return data.length === 0 ? <Shimmer /> :(
+    return data.length === 0 ? <Shimmer /> : (
         <div className={styles.main}>
-            <Search />
+            <Search onChange={handleChange} value={searchText} onClick={filterBySearch} />
             <button onClick={filterRestaurants}>Top rated restaurants</button>
-            <RestoCardContainer data={data} />
+            <RestoCardContainer data={filterData} />
         </div>
     )
 }
