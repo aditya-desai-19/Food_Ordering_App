@@ -2,13 +2,13 @@ import React from "react";
 //@ts-ignore
 import Header from "./containers/Header";
 import "./App.css";
-import Main from "./containers/Main";
+import { Outlet } from "react-router-dom";
 
 const App: React.FC = () => {
     return (
         <div>
             <Header />
-            <Main />
+            <Outlet />
         </div>
     )
 }

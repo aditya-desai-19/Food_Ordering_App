@@ -4,19 +4,26 @@ import About from "./containers/About";
 import Contact from "./containers/Contact";
 import Error from "./containers/Error";
 import React from "react";
+import Main from "./containers/Main";
 
 const AppRouter = createBrowserRouter([
     {
         path: "/",
-        element: <App />
-    },
-    {
-        path: "/about",
-        element: <About />
-    },
-    {
-        path: "/contact",
-        element: <Contact />
+        element: <App />,
+        children: [
+            {
+                path: "/",
+                element: <Main />
+            },
+            {
+                path: "/about",
+                element: <About />
+            },
+            {
+                path: "/contact",
+                element: <Contact />
+            },
+        ]
     },
     {
         path: "*",
