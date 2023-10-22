@@ -1,0 +1,6 @@
+.resHeading{
+    height: 15rem;
+    width: 80%;
+    display: flex;
+    justify-content: space-between;
+}

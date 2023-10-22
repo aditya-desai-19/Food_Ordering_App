@@ -5,6 +5,7 @@ import Contact from "./containers/Contact";
 import Error from "./containers/Error";
 import React from "react";
 import Main from "./containers/Main";
+import RestaurantMenu from "./containers/RestaurantMenu";
 
 const AppRouter = createBrowserRouter([
     {
@@ -22,6 +23,10 @@ const AppRouter = createBrowserRouter([
             {
                 path: "/contact",
                 element: <Contact />
+            },
+            {
+                path: "/restaurants/:id",
+                element: <RestaurantMenu />
             },
         ]
     },
