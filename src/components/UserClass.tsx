@@ -11,15 +11,22 @@ type UserProps = {
 class UserClass extends React.Component<UserProps, { count: number }> {
     constructor(props: UserProps) {
         super(props);
+        console.log(this.props.name + "Child constructor");
 
         this.state = {
             count: 0,
         }
     }
 
+    componentDidMount(): void {
+        console.log(this.props.name + "Child componentDidMount");
+    }
+
     render(): React.ReactNode {
         const { name, location, position } = this.props
         const { count } = this.state;
+
+        console.log(this.props.name + "Child render")
 
         const increaseCount = () => {
             this.setState({
