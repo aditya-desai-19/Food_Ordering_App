@@ -1,24 +1,36 @@
 import React, { Component } from "react";
 import UserClass from "../components/UserClass";
 
-class About extends Component {
+type AboutProps = {}
+type AboutState = {
+    usersInfo: object
+}
+
+class About extends Component<AboutProps, AboutState> {
     constructor(props) {
         super(props);
-        console.log("Parent constructor");
+
+        this.state = {
+            usersInfo: {},
+        }
     }
 
-    componentDidMount(): void {
-        console.log("Parent componentDidMount");
+    async componentDidMount() {
+        const url = "https://jsonplaceholder.typicode.com/users";
+        const data = await fetch(url);
+        const json = await data.json();
+        console.log(json) 
+        this.setState({usersInfo:json[0]});
     }
+
+    
 
     render(): React.ReactNode {
-        console.log("Parent render called")
+        console.log(this.state.usersInfo)
         return (
             <div>
                 <h2>Instafood is a platform where you can order food from your favourite restaurants</h2>
-                <UserClass name="Aditya" location="Bangalore" position="Software Engineer" />
-                <UserClass name="Ashish" location="Belagavi" position="Software Engineer" />
-                <UserClass name="Avinash" location="Pune" position="Software Engineer" />
+                <UserClass name={this.state.usersInfo.name} location="Bangalore" position="Software Engineer" />
             </div>
         )
     }
