@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown, faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import { useParams } from "react-router-dom";
 import useRestaurantMenu from "../utils/useRestaurantMenu";
+import useOnlineStatus from "../utils/useOnlineStatus";
 
 const RestaurantMenu: React.FC = () => {
 	const [showFirstMenu, setShowFirstMenu] = useState<boolean>(false);
@@ -14,6 +15,10 @@ const RestaurantMenu: React.FC = () => {
 
 	const { id } = useParams();
 	const menuData = useRestaurantMenu(id);
+	const onlineStatus = useOnlineStatus();
+
+	// console.log({ onlineStatus });
+	if (onlineStatus === false) return <h1>Looks like you are offline!!</h1>;
 
 	if (menuData === null) return <Shimmer />;
 
