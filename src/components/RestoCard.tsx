@@ -1,31 +1,33 @@
-import React from 'react';
-//@ts-ignore
-import styles from './styles/RestoCard.module.css'
+import React from "react";
 
 interface RestoCardProps {
-    imgSrc: string;
-    restoName: string;
-    cuisine: string;
-    ratings: string;
-    location: string;
+	imgSrc: string;
+	restoName: string;
+	cuisine: string;
+	ratings: string;
+	location: string;
 }
 
 const RestoCard: React.FC<RestoCardProps> = ({
-    imgSrc,
-    restoName,
-    cuisine,
-    ratings,
-    location
+	imgSrc,
+	restoName,
+	cuisine,
+	ratings,
+	location,
 }) => {
-    return (
-        <div className={styles.card}>
-            <img className={styles.restoImg} src={imgSrc} alt="Restaurant logo" />
-            <h3>{restoName}</h3>
-            <h4>{cuisine}</h4>
-            <p>{ratings}/5</p>
-            <p>{location}</p>
-        </div>
-    )
-}
+	return (
+		<div className="h-[350px] w-48 p-2 m-2 border-2 border-gray-300 bg-gray-50 hover:bg-gray-200 rounded-lg">
+			<img
+				className="h-48 w-full rounded-lg"
+				src={imgSrc}
+				alt="Restaurant logo"
+			/>
+			<p className="font-bold py-1">{restoName}</p>
+			<p>{cuisine}</p>
+			<p>{ratings}/5</p>
+			<p>{location}</p>
+		</div>
+	);
+};
 
 export default RestoCard;

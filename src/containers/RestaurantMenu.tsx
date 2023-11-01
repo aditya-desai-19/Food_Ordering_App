@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { MENU_URL } from "../assets/data/data";
 import Shimmer from "./Shimmer";
-//@ts-ignore
-import styles from "./styles/RestaurantMenu.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown, faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import { useParams } from "react-router-dom";
@@ -17,7 +14,6 @@ const RestaurantMenu: React.FC = () => {
 	const menuData = useRestaurantMenu(id);
 	const onlineStatus = useOnlineStatus();
 
-	// console.log({ onlineStatus });
 	if (onlineStatus === false) return <h1>Looks like you are offline!!</h1>;
 
 	if (menuData === null) return <Shimmer />;
@@ -44,10 +40,10 @@ const RestaurantMenu: React.FC = () => {
 	};
 
 	return (
-		<div className={styles.menu}>
-			<div className={styles.resHeading}>
+		<div className="flex flex-col items-center">
+			<div className="flex justify-between h-28 w-1/2 mt-4 p-4 border-b-2 border-dotted border-gray-300">
 				<div>
-					<h1>{name}</h1>
+					<p className="font-semibold text-xl">{name}</p>
 					<p>{cuisines.join(", ")}</p>
 					<p>{areaName}</p>
 				</div>
@@ -55,44 +51,30 @@ const RestaurantMenu: React.FC = () => {
 					<h2>{avgRating}⭐</h2>
 				</div>
 			</div>
-			<div className={styles.resMenu}>
-				<div className={styles.resMenuTitle} onClick={handleFirstMenu}>
-					<p>{title}</p>
+			<div className="h-20 w-1/2 border-b-2 border-dotted border-gray-300">
+				<div
+					className="flex justify-between p-4"
+					onClick={handleFirstMenu}
+				>
+					<p className="font-semibold text-lg">{title}</p>
 					<button>
 						<FontAwesomeIcon
 							icon={!showFirstMenu ? faAngleRight : faAngleDown}
 						/>
 					</button>
 				</div>
-				{showFirstMenu && (
+			</div>
+			{showFirstMenu && (
+				<div>
 					<ul>
 						{itemCards?.map((item) => (
-							<li key={item.card.info.id}>
+							<li key={item.card.info.id} className="p-2">
 								{item.card.info.name}
 							</li>
 						))}
 					</ul>
-				)}
-			</div>
-			<div className={styles.resMenu}>
-				<div className={styles.resMenuTitle} onClick={handleSecondMenu}>
-					<p>{starterObj.title}</p>
-					<button>
-						<FontAwesomeIcon
-							icon={!showSecondMenu ? faAngleRight : faAngleDown}
-						/>
-					</button>
 				</div>
-				{showSecondMenu && (
-					<ul>
-						{starterObj?.itemCards?.map((item) => (
-							<li key={item.card.info.id}>
-								{item.card.info.name}
-							</li>
-						))}
-					</ul>
-				)}
-			</div>
+			)}
 		</div>
 	);
 };
