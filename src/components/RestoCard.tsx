@@ -30,4 +30,17 @@ const RestoCard: React.FC<RestoCardProps> = ({
 	);
 };
 
+export const withOpenLabel = (RestoCard) => {
+	return (props) => {
+		return (
+			<div>
+				<label className="absolute bg-gray-700 text-white m-2 p-2 rounded-lg">
+					Open
+				</label>
+				<RestoCard {...props} />
+			</div>
+		);
+	};
+};
+
 export default RestoCard;
