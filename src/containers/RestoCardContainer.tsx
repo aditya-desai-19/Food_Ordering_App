@@ -22,13 +22,18 @@ const RestoCardContainer: React.FC<RestoCardProps> = ({ data }) => {
 		<div className="flex justify-evenly flex-wrap">
 			{data.map((item) =>
 				item.info.isOpen ? (
-					<OpenRestaurant
-						imgSrc={CDN_URL + item.info.cloudinaryImageId}
-						restoName={item.info.name}
-						cuisine={item.info.cuisines[0]}
-						ratings={item.info.avgRatingString}
-						location={item.info.locality}
-					/>
+					<Link
+						to={"/restaurants/" + item.info.id}
+						key={item.info.id}
+					>
+						<OpenRestaurant
+							imgSrc={CDN_URL + item.info.cloudinaryImageId}
+							restoName={item.info.name}
+							cuisine={item.info.cuisines[0]}
+							ratings={item.info.avgRatingString}
+							location={item.info.locality}
+						/>
+					</Link>
 				) : (
 					<Link
 						to={"/restaurants/" + item.info.id}

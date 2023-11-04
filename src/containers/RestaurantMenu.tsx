@@ -1,17 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Shimmer from "./Shimmer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown, faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import { useParams } from "react-router-dom";
 import useRestaurantMenu from "../utils/useRestaurantMenu";
 import useOnlineStatus from "../utils/useOnlineStatus";
+// import { CDN_URL } from "../assets/data/data";
+
+const CDN_URL =
+	"https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_508,h_320,c_fill/";
 
 const RestaurantMenu: React.FC = () => {
 	const [showFirstMenu, setShowFirstMenu] = useState<boolean>(false);
-	const [showSecondMenu, setShowSecondMenu] = useState<boolean>(false);
 
 	const { id } = useParams();
 	const menuData = useRestaurantMenu(id);
+	console.log({ menuData });
 	const onlineStatus = useOnlineStatus();
 
 	if (onlineStatus === false) return <h1>Looks like you are offline!!</h1>;
@@ -23,20 +27,9 @@ const RestaurantMenu: React.FC = () => {
 	const { title, itemCards } =
 		menuData?.cards[2]?.groupedCard?.cardGroupMap?.REGULAR?.cards[1]?.card
 			?.card;
-	const starterObj = {
-		title: menuData?.cards[2]?.groupedCard?.cardGroupMap?.REGULAR?.cards[3]
-			?.card?.card?.title,
-		itemCards:
-			menuData?.cards[2]?.groupedCard?.cardGroupMap?.REGULAR?.cards[3]
-				?.card?.card?.itemCards,
-	};
 
 	const handleFirstMenu = () => {
 		setShowFirstMenu(!showFirstMenu);
-	};
-
-	const handleSecondMenu = () => {
-		setShowSecondMenu(!showSecondMenu);
 	};
 
 	return (
@@ -51,30 +44,51 @@ const RestaurantMenu: React.FC = () => {
 					<h2>{avgRating}⭐</h2>
 				</div>
 			</div>
-			<div className="h-20 w-1/2 border-b-2 border-dotted border-gray-300">
+			<div className="w-1/2 border-b-2 border-dotted border-gray-300">
 				<div
 					className="flex justify-between p-4"
 					onClick={handleFirstMenu}
 				>
-					<p className="font-semibold text-lg">{title}</p>
+					<p className="font-semibold text-lg">
+						{title + " " + "(" + itemCards?.length + ")"}
+					</p>
 					<button>
 						<FontAwesomeIcon
 							icon={!showFirstMenu ? faAngleRight : faAngleDown}
 						/>
 					</button>
 				</div>
-			</div>
-			{showFirstMenu && (
-				<div>
-					<ul>
+				{showFirstMenu && (
+					<div>
 						{itemCards?.map((item) => (
-							<li key={item.card.info.id} className="p-2">
-								{item.card.info.name}
-							</li>
+							<div
+								className="p-2 flex justify-between border-b-2 border-gray-300"
+								key={item.card.id}
+							>
+								<div>
+									<p className="font-bold text-md">
+										{item.card.info.name}
+									</p>
+									<p>
+										₹{" "}
+										{" " +
+											((item.card.info.price / 100) |
+												(item.card.info.defaultPrice /
+													100))}
+									</p>
+									<p className="text-sm">
+										{item.card.info.description}
+									</p>
+								</div>
+								<img
+									className="h-28 w-20 rounded-lg"
+									src={CDN_URL + item.card.info.imageId}
+								/>
+							</div>
 						))}
-					</ul>
-				</div>
-			)}
+					</div>
+				)}
+			</div>
 		</div>
 	);
 };
