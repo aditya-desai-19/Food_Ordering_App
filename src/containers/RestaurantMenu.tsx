@@ -5,6 +5,7 @@ import { faAngleDown, faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import { useParams } from "react-router-dom";
 import useRestaurantMenu from "../utils/useRestaurantMenu";
 import useOnlineStatus from "../utils/useOnlineStatus";
+import CarouselCard from "../components/CarouselCard";
 // import { CDN_URL } from "../assets/data/data";
 
 const CDN_URL =
@@ -24,7 +25,7 @@ const RestaurantMenu: React.FC = () => {
 
 	const { name, cuisines, areaName, avgRating } =
 		menuData?.cards[0]?.card?.card?.info;
-	const { title, itemCards } =
+	const { title, itemCards, carousel } =
 		menuData?.cards[2]?.groupedCard?.cardGroupMap?.REGULAR?.cards[1]?.card
 			?.card;
 
@@ -44,51 +45,76 @@ const RestaurantMenu: React.FC = () => {
 					<h2>{avgRating}⭐</h2>
 				</div>
 			</div>
-			<div className="w-1/2 border-b-2 border-dotted border-gray-300">
-				<div
-					className="flex justify-between p-4"
-					onClick={handleFirstMenu}
-				>
-					<p className="font-semibold text-lg">
-						{title + " " + "(" + itemCards?.length + ")"}
-					</p>
-					<button>
-						<FontAwesomeIcon
-							icon={!showFirstMenu ? faAngleRight : faAngleDown}
-						/>
-					</button>
-				</div>
-				{showFirstMenu && (
-					<div>
-						{itemCards?.map((item) => (
-							<div
-								className="p-2 flex justify-between border-b-2 border-gray-300"
-								key={item.card.id}
-							>
-								<div>
-									<p className="font-bold text-md">
-										{item.card.info.name}
-									</p>
-									<p>
-										₹{" "}
-										{" " +
-											((item.card.info.price / 100) |
-												(item.card.info.defaultPrice /
-													100))}
-									</p>
-									<p className="text-sm">
-										{item.card.info.description}
-									</p>
-								</div>
-								<img
-									className="h-28 w-20 rounded-lg"
-									src={CDN_URL + item.card.info.imageId}
-								/>
-							</div>
+			{carousel !== undefined ? (
+				<div className="h-80 w-1/2 border-y-2 border-dotted border-gray-300 overflow-hidden relative">
+					<p className="font-bold text-2xl text-left my-4">{title}</p>
+					<div className="h-full rounded-lg flex justify-between">
+						{carousel.map((item) => (
+							<CarouselCard
+								key={item.dish.info.id}
+								imgSrc={CDN_URL + item.dish.info.imageId}
+								title={item.dish.info.name}
+								description={item.dish.info.description}
+								price={item.dish.info.price}
+							/>
 						))}
 					</div>
-				)}
-			</div>
+				</div>
+			) : (
+				<div className="w-1/2 border-b-2 border-dotted border-gray-300">
+					<div
+						className="flex justify-between p-4"
+						onClick={handleFirstMenu}
+					>
+						<p className="font-semibold text-lg">{title}</p>
+						<button>
+							<FontAwesomeIcon
+								icon={
+									!showFirstMenu ? faAngleRight : faAngleDown
+								}
+							/>
+						</button>
+					</div>
+					{showFirstMenu && (
+						<div>
+							{itemCards?.map((item) => (
+								<div
+									className="p-2 flex justify-evenly border-b-2 border-gray-300"
+									key={item.card.id}
+								>
+									<div className="w-9/12">
+										<p className="font-bold text-md">
+											{item.card.info.name}
+										</p>
+										<p>
+											₹{" "}
+											{" " +
+												((item.card.info.price / 100) |
+													(item.card.info
+														.defaultPrice /
+														100))}
+										</p>
+										<p className="text-xs">
+											{item.card.info.description}
+										</p>
+									</div>
+									<div className="ml-4 w-3/12">
+										<button className="p-2 w-16 bg-white text-green-400 rounded-lg absolute ml-8 mt-12">
+											Add+
+										</button>
+										<img
+											className="h-24 w-32 bg-cover rounded-lg"
+											src={
+												CDN_URL + item.card.info.imageId
+											}
+										/>
+									</div>
+								</div>
+							))}
+						</div>
+					)}
+				</div>
+			)}
 		</div>
 	);
 };
