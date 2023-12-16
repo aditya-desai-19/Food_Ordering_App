@@ -6,6 +6,7 @@ import Error from "./containers/Error";
 import React from "react";
 import Main from "./containers/Main";
 import RestaurantMenu from "./containers/RestaurantMenu";
+import Cart from "./containers/Cart";
 
 const AppRouter = createBrowserRouter([
     {
@@ -27,6 +28,10 @@ const AppRouter = createBrowserRouter([
             {
                 path: "/restaurants/:id",
                 element: <RestaurantMenu />
+            },
+            {
+                path: "/cart",
+                element: <Cart />
             },
         ]
     },

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { ReactEventHandler, useState } from "react";
 import Shimmer from "./Shimmer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown, faAngleRight } from "@fortawesome/free-solid-svg-icons";
@@ -6,6 +6,9 @@ import { useParams } from "react-router-dom";
 import useRestaurantMenu from "../utils/useRestaurantMenu";
 import useOnlineStatus from "../utils/useOnlineStatus";
 import CarouselCard from "../components/CarouselCard";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { addItem } from "../redux/slices/cartSlice";
+import { add } from "../redux/slices/cartQuantity";
 // import { CDN_URL } from "../assets/data/data";
 
 const CDN_URL =
@@ -13,24 +16,35 @@ const CDN_URL =
 
 const RestaurantMenu: React.FC = () => {
 	const [showFirstMenu, setShowFirstMenu] = useState<boolean>(false);
-
 	const { id } = useParams();
 	const menuData = useRestaurantMenu(id);
-	console.log({ menuData });
 	const onlineStatus = useOnlineStatus();
+	const dispatch = useAppDispatch();
+	const cartItemsQuantity = useAppSelector((state) => state.cartQuantity.quantity);
 
 	if (onlineStatus === false) return <h1>Looks like you are offline!!</h1>;
 
 	if (menuData === null) return <Shimmer />;
 
-	const { name, cuisines, areaName, avgRating } =
-		menuData?.cards[0]?.card?.card?.info;
-	const { title, itemCards, carousel } =
-		menuData?.cards[2]?.groupedCard?.cardGroupMap?.REGULAR?.cards[1]?.card
-			?.card;
-
+	const { name, cuisines, areaName, avgRating } = menuData?.cards[0]?.card?.card?.info;
+	const { title, itemCards, carousel } = menuData?.cards[2]?.groupedCard?.cardGroupMap?.REGULAR?.cards[1]?.card?.card;
+			
 	const handleFirstMenu = () => {
 		setShowFirstMenu(!showFirstMenu);
+	};
+
+	const handleAddItem = (item) => (event: any) => {
+		dispatch(addItem(item));
+		const id = item?.card?.info?.id;
+		if(id) {
+			dispatch(add({id: id, quantity: 1}))
+		}
+		// if(id && cartItemsQuantity[id] !== undefined) {
+		// 	const currentQuantity = cartItemsQuantity[id];
+		// 	dispatch(add({id: id, quantity: currentQuantity + 1}))
+		// } else {
+		// 	dispatch(add({id: id, quantity: 1}))
+		// }
 	};
 
 	return (
@@ -79,7 +93,7 @@ const RestaurantMenu: React.FC = () => {
 						<div>
 							{itemCards?.map((item) => (
 								<div
-									className="p-2 flex justify-evenly border-b-2 border-gray-300"
+									className="p-2 flex justify-evenly border-2 border-gray-300"
 									key={item.card.id}
 								>
 									<div className="w-9/12">
@@ -98,8 +112,8 @@ const RestaurantMenu: React.FC = () => {
 											{item.card.info.description}
 										</p>
 									</div>
-									<div className="ml-4 w-3/12">
-										<button className="p-2 w-16 bg-white text-green-400 rounded-lg absolute ml-8 mt-12">
+									<div className="ml-4">
+										<button className="p-2 w-16 bg-white text-green-400 rounded-lg absolute ml-8 mt-12" onClick={handleAddItem(item)}>
 											Add+
 										</button>
 										<img
